@@ -1,19 +1,23 @@
 from flask import jsonify
 
-def success_response(data=None, message=None, status_code=200):
+# Case response menggunakan bolean
+def success_response(data=None, status_code=200, unique_code=None):
     """Format standard untuk response sukses."""
     response = {
         "success" : True,
         "data": data,
-        "unique_code" : 2
     }
+    if unique_code:
+        response["unique_code"] = unique_code
 
-    if message:
-        response["message"] = message
+    # Message sudah tidak ada langsung dari Calculation
+    # if message:
+    #     response["message"] = message
 
     return jsonify(response), status_code
 
 
+# Opsi response menggunakan Status success or Error
 def success_response_status(data=None, message=None, status_code=200):
     """Format standard untuk response sukses."""
     response = {

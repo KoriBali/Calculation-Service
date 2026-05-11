@@ -12,23 +12,23 @@ def create_app():
     API_KEY = os.getenv("SECRET_KEY", "secret_cadangan")
     
     # Security with SECRET_KEY
-    @app.before_request
-    def validate_api_key():
-        incoming_key = request.headers.get("X-Internal-Key")
-        print(incoming_key)
+    # @app.before_request
+    # def validate_api_key():
+    #     incoming_key = request.headers.get("X-Internal-Key")
+    #     print(incoming_key)
 
-        if incoming_key != API_KEY:
-            abort(401, description="Unauthorized")
+    #     if incoming_key != API_KEY:
+    #         abort(401, description="Unauthorized")
 
 
     # Register Blueprints
 
     # add the import here
-    from app.calc_example.routes import calc_bp
     from app.opening_part.routes import opening_bp
+    from app.pole.routes import pole_bp
 
     # add the blueprint here
-    app.register_blueprint(calc_bp)
     app.register_blueprint(opening_bp)
+    app.register_blueprint(pole_bp)
 
     return app

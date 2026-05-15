@@ -35,4 +35,4 @@ def calculate_pole():
     except TypeError as e:
         return error_response(errors=e.args, status_code=400)
     except Exception as e:
-        return error_response(errors=e.args, status_code=500)
+        return error_response(errors=e.args, status_code=401)

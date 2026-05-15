@@ -26,9 +26,11 @@ def create_app():
     # add the import here
     from app.opening_part.routes import opening_bp
     from app.pole.routes import pole_bp
+    from app.load_object.routes import load_object_bp
 
     # add the blueprint here
     app.register_blueprint(opening_bp)
     app.register_blueprint(pole_bp)
+    app.register_blueprint(load_object_bp)
 
     return app

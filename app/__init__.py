@@ -20,6 +20,8 @@ def create_app():
     #     if incoming_key != API_KEY:
     #         abort(401, description="Unauthorized")
 
+    # ganti "*" di origin dengan URL Railway API Gateway
+    # CORS(app, resources={r"/api/*": {"origins": "*"}})
 
     # Register Blueprints
 

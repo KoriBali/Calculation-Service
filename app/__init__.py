@@ -1,7 +1,8 @@
-from flask import Flask, request, abort
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 from app.config import Config
 import os
+from datetime import datetime, timezone
 
 def create_app():
     app = Flask(__name__)
@@ -11,7 +12,7 @@ def create_app():
 
     API_KEY = os.getenv("SECRET_KEY", "secret_cadangan")
     
-    # Security with SECRET_KEY
+    # Security with SECRET_KEY PENTING JANGAN DI HAPUS
     # @app.before_request
     # def validate_api_key():
     #     incoming_key = request.headers.get("X-Internal-Key")
@@ -21,7 +22,39 @@ def create_app():
     #         abort(401, description="Unauthorized")
 
     # ganti "*" di origin dengan URL Railway API Gateway
-    # CORS(app, resources={r"/api/*": {"origins": "*"}})
+    # CORS(app, resources={r"/api/*": {"origins": "*"}})\
+
+
+    """Entry Point Start"""
+    @app.route("/")
+    def root():
+        return jsonify({
+            "name": "Kori Bali Calculation Service",
+            "status": "online",
+            "version": "1.0.0",
+            "server_time": datetime.now(timezone.utc).isoformat()
+        })
+
+    @app.route("/health")
+    def health():
+        return jsonify({
+            "status": "healthy"
+        })
+    
+    @app.errorhandler(404)
+    def not_found(error):
+        return jsonify({
+            "error": "Route not found",
+            "path": request.path
+        }), 404
+
+    @app.errorhandler(500)
+    def internal_error(error):
+        return jsonify({
+            "error": "Internal server error"
+        }), 500
+    """Entry Point End"""
+    
 
     # Register Blueprints
 

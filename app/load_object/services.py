@@ -26,71 +26,38 @@ def evaluate_load_object(request: LoadObjectRequest) -> dict:
 
     z_ref = float(list(request.high_evaluation.values())[0])
 
-    calc   = CalcLoadPerSection(poles + direct_objects)
-    totals = calc.get_total_load(z_ref)
+    calc   = CalcLoadPerSection(direct_objects + poles)
 
+    eval_results = {}
     
+    # Iterasi untuk setiap titik high_evaluation (contoh: eval_point_1)
+    for eval_name, z_ref in request.high_evaluation.items():
+        z_val = float(z_ref)
+        
+        # 1. Dapatkan detail beban per objek
+        per_obj = [
+            {
+                "name": obj.name,
+                "windload": round(windload, 4),
+                "moment": round(moment, 4),
+            }
+            for obj, windload, moment in calc.get_windloads(z_val)
+        ]
 
-    # Berdasarkan Calculation
-    # build domain objects
-    # poles = [
-    #     PoleObject(
-    #         name      = p.name,
-    #         diameter  = p.diameter,
-    #         thickness = p.thickness,
-    #         material  = p.material,
-    #         z_height  = p.z_height,
-    #     )
-    #     for p in request.poles
-    # ]
+        # 2. Dapatkan total beban di titik tersebut
+        totals = calc.get_total_load(z_val)
+        
+        # 3. Tentukan status (OK / NG)
+        is_safe = totals["total_moment"] < 100000 
 
-    # direct_objects = [
-    #     DirectObject(
-    #         name     = d.name,
-    #         area     = d.area,
-    #         cf       = d.cf,
-    #         weight   = d.weight,
-    #         z_height = d.z_height,
-    #     )
-    #     for d in request.direct_objects
-    # ]
-
-    # objects = poles + direct_objects
-
-    # run calculation
-    # calc = CalcLoadPerSection(objects)
+        # 4. Susun struktur response per evaluasi
+        eval_results[eval_name] = {
+            "z_ref": z_val,
+            "status": "OK" if is_safe else "NG",
+            "total_windload": round(totals["total_windload"], 4),
+            "total_moment": round(totals["total_moment"], 4),
+            "objects": per_obj
+        }
 
 
-    # sections_result = {}
-    # for section_name, z_ref in request.sections.items():
-    #     per_obj = [
-    #         {
-    #             "name":     obj.name,
-    #             "windload": round(windload, 4),
-    #             "moment":   round(moment,   4),
-    #         }
-    #         for obj, windload, moment in calc.get_windloads(float(z_ref))
-    #     ]
-
-    #     totals = calc.get_total_load(float(z_ref))
-
-    #     sections_result[section_name] = {
-    #         "z_ref":          float(z_ref),
-    #         "objects":        per_obj,
-    #         "total_windload": round(totals["total_windload"], 4),
-    #         "total_moment":   round(totals["total_moment"],   4),
-    #     }
-
-    return {
-        # Berdasarkan Calculation
-        # "summary": {
-        #     "n_poles":          len(poles),
-        #     "n_direct_objects": len(direct_objects),
-        #     "n_high_evaluation":       len(request.sections),
-        # },
-        # "sections": sections_result,
-
-        # Case Needs
-        "total_windload": round(totals["total_windload"], 4),
-        "total_moment":   round(totals["total_moment"],   4),
-    }
+    return eval_results

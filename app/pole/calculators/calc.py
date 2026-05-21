@@ -10,9 +10,8 @@ file ini berisi rumus-rumus kalkulasi (testing purpose)
 8. Capacity Check & Utilization Ratio
 9. Torsion
 """
-
+import math
 from app.constants import PI, AIR_DENSITY, GRAVITY
-import math # alternate: sudah tersedia python. bisa untuk PI
 from typing import List
 from app.pole.schemas import PoleInput, ObjectInput
 

@@ -37,13 +37,29 @@ class DirectObjectInput:
             raise ValueError(f"area for '{self.name}' must be greater than 0")
         if self.z_height <= 0:
             raise ValueError(f"z_height for '{self.name}' must be greater than 0")
+        
+
+# OverheadWire
+@dataclass
+class OverheadWireInput:
+    name: str
+    weight: float
+    diameter:float
+    z_height: float
+    span: float
+    sagging_ratio: float
+    nnc: float
+    fix_angle: float
+    vertical_angle: float
 
 
 @dataclass
 class LoadObjectRequest:
     poles: List[PoleInput]
-    high_evaluation: dict                                                          # {"section_1": 9.69, ...}
+    high_evaluation: dict                                                          
     direct_objects: List[DirectObjectInput] = field(default_factory=list)  # opsional
+    overhead_wires: List[OverheadWireInput] = field(default_factory=list)  # opsional
+
 
     def __post_init__(self):
         if not self.poles:
@@ -55,3 +71,5 @@ class LoadObjectRequest:
                 raise ValueError(f"high evaluation '{name}': z_ref must be a number")
             if float(z) < 0:
                 raise ValueError(f"high evaluation '{name}': z_ref must be >= 0")
+            
+

@@ -9,6 +9,7 @@ load_object_bp = Blueprint("load_object_calc", __name__, url_prefix="/api/load-o
 @load_object_bp.route("/calculate", methods=["POST"])
 def calculate_load_object():
     payload = request.get_json()
+    # print("this is Payload", payload)
  
     try:
         poles = [PoleInput(**p) for p in payload["poles"]]

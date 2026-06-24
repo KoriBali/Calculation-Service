@@ -1,0 +1,13 @@
+services:
+  calculation-service:
+    build: .
+    image: calculation-service:latest
+    container_name: calculation-service
+    ports:
+      - "5000:5000"
+    networks:
+      - backend-network
+
+networks:
+  backend-network:
+    external: true

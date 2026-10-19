@@ -1,0 +1,1 @@
+"""Input sub-schemas used by more than one feature folder."""

@@ -1,6 +1,6 @@
 """Material definitions used by structural domain objects.
 
-Ported from python_calc ``domain/materials.py`` (commit 41cca03).
+Ported from python_calc ``domain/materials.py``.
 """
 
 from dataclasses import dataclass

@@ -1,6 +1,6 @@
 """Regression tests comparing Python helpers with M_Func_Basic.bas.
 
-Ported from python_calc ``tests/test_basic_function.py`` (commit 41cca03).
+Ported from python_calc ``tests/test_basic_function.py``.
 """
 
 import unittest

@@ -1,6 +1,6 @@
 """Tests for pole material domain objects.
 
-Ported from python_calc ``tests/test_materials.py`` (commit 41cca03).
+Ported from python_calc ``tests/test_materials.py``.
 """
 
 import unittest

@@ -1,6 +1,6 @@
 """Tests for confirmed wind and seismic condition rules.
 
-Ported from python_calc ``tests/test_conditions.py`` (commit 41cca03).
+Ported from python_calc ``tests/test_conditions.py``.
 """
 
 import unittest

@@ -12,24 +12,20 @@ def map_section_check(
     positions: list[tuple],
 ) -> dict:
     return {
-        "schemaVersion": SCHEMA_VERSION,
+        "schema_version": SCHEMA_VERSION,
         "checks": ["wind", "seismic"] if has_seismic else ["wind"],
-        "designCondition": {
+        "design_condition": {
             "wind": map_wind_condition(wind),
-            "seismic": (
-                None
-                if request.seismic is None
-                else request.seismic.model_dump(by_alias=True)
-            ),
-            "overdesignFactor": request.overdesign_factor,
-            "baseElevationM": request.base_elevation_m,
+            "seismic": None if request.seismic is None else request.seismic.model_dump(),
+            "overdesign_factor": request.overdesign_factor,
+            "base_elevation_m": request.base_elevation_m,
         },
-        "evaluatedPositions": [
+        "evaluated_positions": [
             {
-                "evaluatedPositionM": position,
+                "evaluated_position_m": position,
                 "pole": map_result(pole),
-                "directObject": map_result(direct_object),
-                "sectionCheck": map_result(section),
+                "direct_object": map_result(direct_object),
+                "section_check": map_result(section),
             }
             for position, pole, direct_object, section in positions
         ],

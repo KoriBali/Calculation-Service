@@ -11,7 +11,7 @@ from app.shared.schemas.pole import PoleSegmentInput
 class SectionCheckRequest(ApiModel):
     """Every component except the pole is optional: sent = calculated.
 
-    ``overheadWires`` is not accepted yet (waits for decision D6).
+    ``overhead_wires`` is not accepted yet (waits for decision D6).
     """
 
     wind: WindInput
@@ -24,14 +24,14 @@ class SectionCheckRequest(ApiModel):
 
     @model_validator(mode="after")
     def _check_consistency(self):
-        for label, items in (("poles", self.poles), ("directObjects", self.direct_objects)):
+        for label, items in (("poles", self.poles), ("direct_objects", self.direct_objects)):
             names = [item.name for item in items]
             if len(names) != len(set(names)):
                 raise ValueError(f"{label}: name must be unique")
 
         positions = self.evaluated_positions_m
         if len(positions) != len(set(positions)):
-            raise ValueError("evaluatedPositionsM: positions must be unique")
+            raise ValueError("evaluated_positions_m: positions must be unique")
         if any(position < self.base_elevation_m for position in positions):
-            raise ValueError("evaluatedPositionsM: position cannot be below baseElevationM")
+            raise ValueError("evaluated_positions_m: position cannot be below base_elevation_m")
         return self

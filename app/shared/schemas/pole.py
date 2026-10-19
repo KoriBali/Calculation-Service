@@ -1,4 +1,4 @@
-"""Pole segment input. ``poleType`` decides which dimensions exist."""
+"""Pole segment input. ``pole_type`` decides which dimensions exist."""
 
 from typing import Annotated, Literal
 

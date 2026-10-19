@@ -1,4 +1,4 @@
-"""Direct Object input. ``objectType`` decides which fields exist."""
+"""Direct Object input. ``object_type`` decides which fields exist."""
 
 from typing import Annotated, Literal
 

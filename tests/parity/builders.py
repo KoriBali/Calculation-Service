@@ -6,6 +6,11 @@ from app.engine.calculators.pole import PoleCalculator
 from app.engine.geometry.pole_assembly import PoleAssembly
 from app.engine.loads.base import OverdesignFactor
 from app.engine.loads.pole import PoleObject
+from app.engine.calculators.direct_object import DirectObjectCalculator
+from app.engine.calculators.overhead_wire import OverheadWireCalculator
+from app.engine.loads.direct_object import DirectObject
+from app.engine.loads.overhead_wire import OverheadWire
+
 
 def build_wind(case_input: dict) -> WindCondition:
     return WindCondition(**case_input["wind"])
@@ -28,4 +33,26 @@ def build_pole_calculator(case_input: dict, wind, seismic) -> PoleCalculator:
         wind_condition=wind,
         seismic_condition=seismic,
         overdesign_factor=OverdesignFactor(case_input["overdesign_factor"]),
+    )
+
+
+def build_direct_object_calculator(case_input: dict, wind, seismic):
+    """None when the case has no Direct Object, like the fixture generator."""
+    if not case_input["direct_objects"]:
+        return None
+    return DirectObjectCalculator(
+        [DirectObject(**item) for item in case_input["direct_objects"]],
+        wind,
+        seismic,
+    )
+
+
+def build_overhead_wire_calculator(case_input: dict, wind, seismic):
+    """None when the case has no overhead wire, like the fixture generator."""
+    if not case_input["overhead_wires"]:
+        return None
+    return OverheadWireCalculator(
+        [OverheadWire(**item) for item in case_input["overhead_wires"]],
+        wind,
+        seismic,
     )

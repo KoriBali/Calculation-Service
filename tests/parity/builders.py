@@ -57,8 +57,8 @@ def build_overhead_wire_calculator(case_input: dict, wind, seismic):
         wind,
         seismic,
     )
-    
-    
+
+
 def build_section_check(case_input: dict, seismic_absent: bool = False):
     wind = build_wind(case_input)
     seismic = None if seismic_absent else build_seismic(case_input["seismic"])

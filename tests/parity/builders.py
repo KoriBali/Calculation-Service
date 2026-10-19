@@ -10,6 +10,7 @@ from app.engine.calculators.direct_object import DirectObjectCalculator
 from app.engine.calculators.overhead_wire import OverheadWireCalculator
 from app.engine.loads.direct_object import DirectObject
 from app.engine.loads.overhead_wire import OverheadWire
+from app.engine.calculators.section_check import EvaluatedPositionCalculator
 
 
 def build_wind(case_input: dict) -> WindCondition:
@@ -55,4 +56,14 @@ def build_overhead_wire_calculator(case_input: dict, wind, seismic):
         [OverheadWire(**item) for item in case_input["overhead_wires"]],
         wind,
         seismic,
+    )
+    
+    
+def build_section_check(case_input: dict, seismic_absent: bool = False):
+    wind = build_wind(case_input)
+    seismic = None if seismic_absent else build_seismic(case_input["seismic"])
+    return EvaluatedPositionCalculator(
+        build_pole_calculator(case_input, wind, seismic),
+        build_direct_object_calculator(case_input, wind, seismic),
+        build_overhead_wire_calculator(case_input, wind, seismic),
     )

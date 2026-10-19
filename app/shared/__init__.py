@@ -1,1 +1,1 @@
-"""Code shared by more than one feature folder."""
+"""Input sub-schemas used by more than one feature folder."""

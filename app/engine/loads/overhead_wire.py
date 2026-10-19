@@ -1,6 +1,6 @@
 """Domain model for one overhead wire (OHW).
 
-Ported from python_calc ``domain/overhead_wire.py`` (commit 41cca03).
+Ported from python_calc ``domain/overhead_wire.py``.
 """
 
 from math import cos, pi, radians, sin, sqrt

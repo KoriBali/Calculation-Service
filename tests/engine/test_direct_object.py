@@ -1,6 +1,6 @@
 """Tests for Direct Object behaviour and aggregation.
 
-Ported from python_calc ``tests/test_direct_object.py`` (commit 41cca03).
+Ported from python_calc ``tests/test_direct_object.py``.
 """
 
 import unittest

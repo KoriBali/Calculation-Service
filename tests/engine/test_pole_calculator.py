@@ -1,6 +1,6 @@
 """Integration tests for the Pole calculation flow.
 
-Ported from python_calc ``tests/test_pole_calculator.py`` (commit 41cca03).
+Ported from python_calc ``tests/test_pole_calculator.py``.
 """
 
 import unittest

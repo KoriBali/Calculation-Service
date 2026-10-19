@@ -1,6 +1,6 @@
 """Load and tension calculation for overhead wires.
 
-Ported from python_calc ``calculation/overhead_wire_calculator.py`` (commit 41cca03).
+Ported from python_calc ``calculation/overhead_wire_calculator.py``.
 DEVIATION: ``seismic_condition`` may be None; every seismic result,
 including seismic tension, is then None.
 """

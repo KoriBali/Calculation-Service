@@ -1,6 +1,6 @@
 """Immutable result objects returned by the calculation engine.
 
-Ported from python_calc ``calculation/result.py`` (commit 41cca03).
+Ported from python_calc ``calculation/result.py``.
 
 DEVIATION: every seismic field is ``float | None``. None means no seismic
 condition was given, so nothing seismic was calculated. It is never

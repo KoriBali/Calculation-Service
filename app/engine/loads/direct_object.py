@@ -1,6 +1,6 @@
 """Domain model for equipment mounted directly on a pole.
 
-Ported from python_calc ``domain/direct_object.py`` (commit 41cca03).
+Ported from python_calc ``domain/direct_object.py``.
 """
 
 from enum import Enum

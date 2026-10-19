@@ -15,7 +15,7 @@ Backend service yang dirancang untuk melakukan kalkulasi teknis otomatis dan men
 
 ## Tech Stacks
 
-* **Language:** Python 3.8+
+* **Language:** Python 3.12
 * **Dependency Management:** Pipenv
 * **Testing Framework:** Pytest (Target Coverage >80%)
 * **Linter:** Ruff
@@ -23,23 +23,45 @@ Backend service yang dirancang untuk melakukan kalkulasi teknis otomatis dan men
 
 ## Struktur Folder
 
-Proyek ini menggunakan **Feature-based Structure** untuk memastikan skalabilitas:
+Kode dibagi menjadi **engine** (rumus, Python murni) dan **fitur** (pintu HTTP). Arah dependensi selalu fitur → engine, tidak pernah sebaliknya.
 
 ```text
-koribali_calculation_report/
+calculation_service/
 ├── app/
-│   ├── feature_name/           # Folder per fitur/modul
-│   │   ├── routes.py           # Endpoint API
-│   │   ├── services.py         # Orkestrator logika bisnis
-│   │   ├── calculators/        # Layer khusus formula engineering
-│   │   │   ├── __init__.py     # Re-exporting functions
-│   │   │   └── calc_logic.py   # Pure functions untuk kalkulasi
-│   │   └── schemas.py          # Data validation (Pydantic/Marshmallow)
-├── tests/                      # Unit testing terisolasi
-├── Pipfile                     # Definisi dependensi
-├── run.py                      # Entry point aplikasi
-└── README.md
+│   ├── __init__.py            # create_app: error handler + registrasi blueprint
+│   ├── engine/                # MESIN: port python_calc, TANPA Flask/pydantic
+│   │   ├── sections.py        # penampang + massa pipa
+│   │   ├── materials.py       # tegangan izin per material
+│   │   ├── conditions/        # angin (std 1-6), gempa, 8 arah
+│   │   ├── loads/             # tiang, direct object, overhead wire
+│   │   ├── geometry/          # susunan segmen tiang
+│   │   ├── calculators/       # pole, direct_object, overhead_wire, section_check
+│   │   └── results.py         # dataclass hasil
+│   ├── shared/                # dipakai lebih dari satu fitur
+│   │   ├── schemas/           # sub-schema input (pydantic)
+│   │   ├── adapters.py        # schema -> objek engine
+│   │   ├── mappers.py         # hasil engine -> JSON
+│   │   ├── errors.py          # 422 untuk input tidak valid
+│   │   └── response.py        # amplop {success, data, unique_code}
+│   └── <fitur>/               # contoh: section_check/
+│       ├── routes.py          # Blueprint + endpoint, tanpa logika hitung
+│       ├── schemas.py         # request khusus fitur (memakai shared/schemas)
+│       ├── services.py        # schema -> adapter -> engine -> mapper
+│       └── mappers.py         # bentuk response fitur
+├── tools/                     # alat pengembangan (tidak dipakai runtime)
+│   ├── port.sh, port_python_calc.sed   # port file dari python_calc
+│   └── export_parity_fixtures.py       # buat fixture parity dari python_calc
+└── tests/
+    ├── engine/                # test unit engine (port dari python_calc/tests)
+    ├── parity/                # fixture python_calc + test "angka harus identik"
+    └── api/                   # test endpoint lewat Flask test client
 ```
+
+Aturan:
+
+- `app/engine/` hanya boleh meng-import stdlib dan `app.engine.*` (dijaga `tests/test_engine_boundary.py`).
+- Folder fitur tidak boleh meng-import folder fitur lain. Yang dipakai bersama dipindah ke `app/shared/`.
+- Rumus di engine adalah salinan python_calc. Perubahan rumus dilakukan di python_calc dulu, lalu fixture dibuat ulang dan engine diport ulang.
 
 ## Instalasi & Persiapan
 
@@ -73,7 +95,11 @@ Kami menjaga kualitas kode dengan pengujian rutin dan linting otomatis:
 
 * **Menjalankan Unit Test:**
     ```bash
-    pytest --cov=app tests/
+    pipenv run pytest -q
+    ```
+* **Membuat ulang fixture parity** (hanya bila rumus python_calc berubah; butuh `../python_calc`):
+    ```bash
+    pipenv run python tools/export_parity_fixtures.py
     ```
 * **Linting (Ruff):**
     ```bash
@@ -87,14 +113,3 @@ Kami menjaga kualitas kode dengan pengujian rutin dan linting otomatis:
 3.  Gunakan **Conventional Commits** (contoh: `feat: add calculation for wind pressure`).
 4.  Commit perubahan kamu dan lakukan **Push** (`git push origin fitur/NamaFitur`).
 5.  Buka **Pull Request**.
-
----
-
-
-### Apa yang saya tingkatkan?
-1.  **Badges:** Menambahkan badge untuk versi Python dan Linter (Ruff) agar terlihat lebih seperti repo profesional.
-2.  **Struktur Folder:** Saya menyesuaikan dengan **Feature-based Structure** yang kamu koreksi sebelumnya, lengkap dengan penjelasan layer *calculators* (Bab 9).
-3.  **Quality Gate:** Menambahkan bagian Testing dan Linting karena saya tahu kamu sangat memperhatikan *coverage* minimal 80%.
-4.  **Copyright:** Menambahkan nama kamu di bagian bawah.
-
-Apakah ada bagian teknis lain yang ingin kamu tambahkan ke dalam README ini?

@@ -1,0 +1,1 @@
+"""Section check: full calculation at every evaluated position."""

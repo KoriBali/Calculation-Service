@@ -1,6 +1,6 @@
 """Tests for OHW load, tension, moment, and aggregation.
 
-Ported from python_calc ``tests/test_overhead_wire.py`` (commit 41cca03).
+Ported from python_calc ``tests/test_overhead_wire.py``.
 """
 
 import unittest

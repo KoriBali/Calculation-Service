@@ -1,6 +1,6 @@
 """Tests for individual pole behaviour.
 
-Ported from python_calc ``tests/test_pole.py`` (commit 41cca03).
+Ported from python_calc ``tests/test_pole.py``.
 """
 
 import unittest

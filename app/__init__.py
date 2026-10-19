@@ -3,6 +3,8 @@ from flask_cors import CORS
 from app.config import Config
 import os
 from datetime import datetime, timezone
+from app.shared.errors import register_error_handlers
+
 
 def create_app():
     app = Flask(__name__)
@@ -55,11 +57,15 @@ def create_app():
         }), 500
     """Entry Point End"""
     
+    register_error_handlers(app)
 
     # Register Blueprints
 
     # add the import here
+    from app.section_check.routes import section_check_bp
 
     # add the blueprint here
+    app.register_blueprint(section_check_bp)
+
 
     return app

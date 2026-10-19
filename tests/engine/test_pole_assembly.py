@@ -1,6 +1,6 @@
 """Tests for assembled pole geometry at evaluated positions.
 
-Ported from python_calc ``tests/test_pole_assembly.py`` (commit 41cca03).
+Ported from python_calc ``tests/test_pole_assembly.py``.
 """
 
 import unittest

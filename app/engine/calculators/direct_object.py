@@ -1,6 +1,6 @@
 """Load calculation and aggregation for Direct Objects.
 
-Ported from python_calc ``calculation/direct_object_calculator.py`` (commit 41cca03).
+Ported from python_calc ``calculation/direct_object_calculator.py``.
 DEVIATION: ``seismic_condition`` may be None; every seismic result is
 then None.
 """
